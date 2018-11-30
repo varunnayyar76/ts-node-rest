@@ -1,9 +1,11 @@
 import { Request, Response } from "express";
+import { AuthMiddleware } from "../middlewares/authMiddleware";
 import { UserController } from "../controllers/userController";
 import { AuthController } from "../controllers/authController";
 
 export class Routes {
 
+	public authMiddleware: AuthMiddleware = new AuthMiddleware()
 	public authController: AuthController = new AuthController()
 	public userController: UserController = new UserController()
 
@@ -16,7 +18,7 @@ export class Routes {
 
 		// User 
 		app.route('/user')
-			.get(this.userController.getUsers)
+			.get(this.authMiddleware.verifyToken, this.userController.getUsers)
 			.post(this.userController.addNewUser);
 
 		// User detail
