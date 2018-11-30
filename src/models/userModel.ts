@@ -4,7 +4,7 @@ import * as validators from 'mongoose-validators';
 const Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
-	firstName: {
+	firstname: {
 		type: String,
 		required: 'FirstName is required.',
 		validate: [
@@ -12,7 +12,7 @@ const UserSchema = new Schema({
 			validators.isLength({ message: 'Length should be between 2 and 60' }, 2, 60)
 		]
 	},
-	lastName: {
+	lastname: {
 		type: String,
 		required: 'LastName is required.',
 		validate: [

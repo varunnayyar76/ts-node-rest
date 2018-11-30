@@ -42,3 +42,38 @@ Run in production mode
 ```
 npm run prod
 ```
+
+
+## Working Routes
+
+`The default URL is: https://localhost:3000`
+
+The key and cert in the config folder is for testing purpose only. You should generate your own.
+
+`
+GET: https://localhost:3000
+`
+
+Get all users:
+
+`
+GET: https://localhost:3000/user/
+`
+
+Save a user:
+
+`
+POST: https://localhost:3000/user/
+`
+
+Update a user:
+
+`
+PUT: https://localhost:3000/user/userID
+`
+
+Delete a user:
+
+`
+DELETE: https://localhost:3000/user/userID
+`
