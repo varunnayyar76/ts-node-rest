@@ -19,14 +19,14 @@ export class Routes {
 		// User 
 		app.route('/user')
 			.get(this.authMiddleware.verifyToken, this.userController.getUsers)
-			.post(this.userController.addNewUser);
+			.post(this.authMiddleware.verifyToken, this.userController.addNewUser);
 
 		// User detail
 		app.route('/user/:userId')
 			// get specific user
-			.get(this.userController.getUserWithID)
-			.put(this.userController.updateUser)
-			.delete(this.userController.deleteUser)
+			.get(this.authMiddleware.verifyToken, this.userController.getUserWithID)
+			.put(this.authMiddleware.verifyToken, this.userController.updateUser)
+			.delete(this.authMiddleware.verifyToken, this.userController.deleteUser)
 
 		app.route('*')
 			.get((req: Request, res: Response) => {
