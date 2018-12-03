@@ -8,7 +8,7 @@ export class UserController {
 
 		newUser.save((err, user) => {
 			if (err) {
-				res.send(err);
+				return res.status(400).send(err);
 			}
 			res.json(user);
 		});
@@ -17,7 +17,7 @@ export class UserController {
 	public getUsers(req: Request, res: Response) {
 		User.find({}, (err, user) => {
 			if (err) {
-				res.send(err);
+				return res.status(400).send(err);
 			}
 			res.json(user);
 		});
@@ -26,7 +26,7 @@ export class UserController {
 	public getUserWithID(req: Request, res: Response) {
 		User.findById(req.params.userId, (err, user) => {
 			if (err) {
-				res.send(err);
+				return res.status(400).send(err);
 			}
 			res.json(user);
 		});
@@ -35,7 +35,7 @@ export class UserController {
 	public updateUser(req: Request, res: Response) {
 		User.findOneAndUpdate({ _id: req.params.userId }, req.body, { new: true }, (err, user) => {
 			if (err) {
-				res.send(err);
+				return res.status(400).send(err);
 			}
 			res.json(user);
 		});
@@ -44,7 +44,7 @@ export class UserController {
 	public deleteUser(req: Request, res: Response) {
 		User.remove({ _id: req.params.userId }, (err, user) => {
 			if (err) {
-				res.send(err);
+				return res.status(400).send(err);
 			}
 			res.json({ message: 'Successfully deleted user!' });
 		});

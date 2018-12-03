@@ -16,13 +16,10 @@ export class AuthController {
 
 		if (!password) {
 			return res.status(400).json({
-				errors: {
-					password: {
-						message: 'Password is required.' 
-					}
-				},
-				message: "User validation failed.",
-        name: "ValidationError"
+				error: {
+					message: 'Password is required.' ,
+					type: "ValidationError"
+				}
 			})
 		}
 
@@ -38,8 +35,7 @@ export class AuthController {
 				expiresIn: 86400 // expires in 24 hours
 			});
 
-			res.status(200)
-				.json({
+			return res.json({
 					status: 'success',
 					data: { 
 						token: token
@@ -49,6 +45,51 @@ export class AuthController {
   }
   
   public login (req: Request, res: Response) {
+		const email = req.body.email;
+		const password = req.body.password;
+
+		if(!email || !password) {
+			return res.status(400).json({
+				error: {
+					message: 'Email or Password not provided.',
+					type: "insufficientParameters" 
+				}
+			})
+		}
     
+    User.findOne({email: email}, (err, user) => {
+    	 if(err) {
+    	 	 return res.status(400).json({
+					error: {
+						message: 'Unable to process request. Please try again.' ,
+						type: "InvalidCredentials"
+					}
+				}) 
+    	 }
+       
+       if(user) {
+       	const validatePassword = bcrypt.compareSync(password, user.password);
+
+	       if(validatePassword) {
+	          const token = jwt.sign({ id: user._id }, secret, {
+							expiresIn: 86400 // expires in 24 hours
+						});
+
+						return res.json({
+								status: 'success',
+								data: { 
+									token: token
+								}
+							}) 
+	       }
+       }
+
+       return res.status(400).json({
+					error: {
+						message: 'Invalid email or password.' ,
+						type: "InvalidCredentials"
+					}
+				})
+    })
   }
 }
