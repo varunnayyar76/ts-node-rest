@@ -46,4 +46,19 @@ const UserSchema = new Schema({
 	}
 });
 
+UserSchema.pre("save", true, function(next, done) {
+	var self = this;
+	mongoose.models["User"].findOne({email: self.email}, function(err, user) {
+			if(err) {
+					done(err);
+			} else if(user) {
+					self.invalidate("email", "Email must be unique");
+					done(new Error("User validation failed: email: Email must be unique"));
+			} else {
+					done();
+			}
+	});
+	next();
+});
+
 export const User = mongoose.model('User', UserSchema);
