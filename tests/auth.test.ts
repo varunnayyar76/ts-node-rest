@@ -6,6 +6,74 @@ import 'mocha';
 chai.use(chaiHttp);
 const expect = chai.expect;
 
+describe('Registration API request: POST auth/register', () => {
+  it('Request without parameters should return status 400', () => {
+    return chai
+      .request(server)
+      .post('/auth/register')
+      .then(res => {
+        chai.expect(res.status).to.eql(400);
+        chai.expect(res.body.message).to.eql('Password is required.');
+      })
+  })
+
+  it('Request without required parameters should return status 400', () => {
+    return chai
+      .request(server)
+      .post('/auth/register')
+      .set('content-type', 'application/x-www-form-urlencoded')
+      .send({ email: 'test@gmail.com', password: 'test' })
+      .then(res => {
+        chai.expect(res.status).to.eql(400);
+      })
+  })
+
+  it('Firstname/Lastname length should be between 2-60, should return status 400', () => {
+    return chai
+      .request(server)
+      .post('/auth/register')
+      .set('content-type', 'application/x-www-form-urlencoded')
+      .send({ email: 'test@gmail.com', password: 'test', firstname:'q', lastname:'q' })
+      .then(res => {
+        chai.expect(res.status).to.eql(400);
+      })
+  })
+
+  it('Invalid email format should return status 400', () => {
+    return chai
+      .request(server)
+      .post('/auth/register')
+      .set('content-type', 'application/x-www-form-urlencoded')
+      .send({ email: 'test.com', password: 'test', firstname:'jon', lastname:'doe' })
+      .then(res => {
+        chai.expect(res.status).to.eql(400);
+      })
+  })
+
+  it('Duplicate email should return status 400', () => {
+    return chai
+      .request(server)
+      .post('/auth/register')
+      .set('content-type', 'application/x-www-form-urlencoded')
+      .send({ email: 'varun@gmail.com', password: 'test', firstname:'jon', lastname:'doe' })
+      .then(res => {
+        chai.expect(res.status).to.eql(400);
+      })
+  })
+
+  it('Create account with valid data should return status 200', () => {
+    return chai
+      .request(server)
+      .post('/auth/register')
+      .set('content-type', 'application/x-www-form-urlencoded')
+      .send({ email: 'nayyar@gmail.com', password: 'test', firstname:'jon', lastname:'doe' })
+      .then(res => {
+        chai.expect(res.status).to.eql(200);
+      })
+  })
+
+})
+
 describe('Login API request: POST /auth/login', () => {
   it('Request without credentails should return status 400', () => {
     return chai
