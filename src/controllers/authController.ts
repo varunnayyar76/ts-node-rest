@@ -61,6 +61,7 @@ export class AuthController {
 			}
 
 			if (!user) {
+				res.statusCode = 401;
 				return next(new Error('Invalid username or password.'));
 			}
 
