@@ -9,10 +9,12 @@ dotenv.config();
 class App {
 
 	public app: express.Application;
-	public appRoute: Routes = new Routes();
-	public mongoUrl: string = process.env.MONGOURL;
+	public appRoute: Routes = new Routes(); 
+	public mongoUrl: string = process.env.NODE_ENV === 'TEST' ? process.env.MONGOURL : process.env.TESTMONGOURL;
 
+	
 	constructor() {
+		console.log(this.mongoUrl);
 		this.app = express();
 		this.config();
 		this.appRoute.routes(this.app);
@@ -27,7 +29,6 @@ class App {
 	}
 
 	private mongoSetup(): void {
-		mongoose.Promise = global.Promise;
 		mongoose.connect(this.mongoUrl, { useNewUrlParser: true });
 		mongoose.set('useCreateIndex', true);
 	}

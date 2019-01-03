@@ -47,7 +47,8 @@ const UserSchema = new Schema({
 });
 
 UserSchema.pre("save", true, function(next, done) {
-	var self = this;
+	const self: any = this;
+	
 	mongoose.models["User"].findOne({email: self.email}, function(err, user) {
 			if(err) {
 					done(err);

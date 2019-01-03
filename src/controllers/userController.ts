@@ -46,7 +46,7 @@ export class UserController {
 	}
 
 	public deleteUser(req: Request, res: Response, next: NextFunction) {
-		User.remove({ _id: req.params.userId }, (err, user) => {
+		User.remove({ _id: req.params.userId }, (err) => {
 			if (err) {
 				res.statusCode = 400;
 				return next(err);

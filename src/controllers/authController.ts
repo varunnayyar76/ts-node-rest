@@ -1,9 +1,8 @@
 import * as dotenv from "dotenv";
 import { User } from '../models/userModel';
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import * as jwt from 'jsonwebtoken';
-import * as bcrypt from 'bcryptjs'
-import { NextFunction } from "express-serve-static-core";
+import * as bcrypt from 'bcryptjs';
 
 dotenv.config();
 
@@ -24,7 +23,7 @@ export class AuthController {
 		} catch (e) {
 			throw new Error(e);
 		}
-		User.create(userData, (err, user) => {
+		User.create(userData, (err: Error, user:any) => {
 			if (err) {
 				return next(err);
 			}
@@ -55,7 +54,7 @@ export class AuthController {
 			throw new Error('Email or Password not provided.');
 		}
 
-		User.findOne({ email: email }, (err, user) => {
+		User.findOne({ email: email }, (err: Error, user: any) => {
 			if (err) {
 				return next(err);
 			}
