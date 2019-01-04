@@ -14,7 +14,6 @@ class App {
 
 	
 	constructor() {
-		console.log(this.mongoUrl);
 		this.app = express();
 		this.config();
 		this.appRoute.routes(this.app);

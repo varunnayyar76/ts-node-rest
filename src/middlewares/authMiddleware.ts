@@ -9,7 +9,7 @@ const secret = process.env.SECRET;
 export class AuthMiddleware {
 
 	public verifyToken(req: Request, res: Response, next: NextFunction) {
-		const token = req.headers['x-access-token'];
+		const token: any = req.headers['x-access-token'];
 		var errFlag = false;
 
 		if (!token) {
@@ -25,7 +25,7 @@ export class AuthMiddleware {
 		}
 
 		try {
-			jwt.verify(token, secret, function (err, decoded) {
+			jwt.verify(token, secret, function (err: Error, decoded:any) {
 				if (err){
 					errFlag = true;
 				} else {
