@@ -17,8 +17,6 @@ export class ProfileController {
   }
 
   public uploadPhoto(req, res: Response, next: NextFunction) {
-    console.log(req.headers.host);
-    console.log(req.url);
     let MB = 1024 * 1024;
     let form = new formidable.IncomingForm();
     let fileName = '';
@@ -59,8 +57,8 @@ export class ProfileController {
         });
     });
 
-    form.on('error', function (err, data) {
-      throw new Error('There is some error. Please try after sometime.');      
+    form.on('error', function () {
+      throw new Error('There is some error. Please try after sometime.');
     });
   }
 

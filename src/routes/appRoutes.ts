@@ -4,7 +4,6 @@ import { UserController } from "../controllers/userController";
 import { AuthController } from "../controllers/authController";
 import { ProfileController } from "../controllers/profileController";
 
-
 export class Routes {
 
 	public authMiddleware: AuthMiddleware = new AuthMiddleware()
@@ -35,17 +34,17 @@ export class Routes {
 		app.route('/user/profile')
 			.get(this.authMiddleware.verifyToken, this.profileController.profile)
 			.put(this.authMiddleware.verifyToken, this.profileController.updateProfile);
-		
+
 		// User Profile Photo
 		app.route('/user/profile/upload')
 			.post(this.profileController.uploadPhoto);
 
-		app.use('*', function(req: Request, res: Response) {
+		app.use('*', function (req: Request, res: Response) {
 			res.statusCode = 404;
 			throw new Error('Page Not Found');
 		});
 
-		app.use(function(err: Error, req: Request, res: Response, next: NextFunction) {
+		app.use(function (err: Error, req: Request, res: Response, next: NextFunction) {
 			// Log error message
 			console.error(err.message);
 			// If err has no specified error code, set error code to 'Internal Server Error (500)'
@@ -53,7 +52,7 @@ export class Routes {
 			//Error with its status code and message
 			res.status(res.statusCode).json({
 				message: err.message
-			}); 
+			});
 		});
 	}
 }
