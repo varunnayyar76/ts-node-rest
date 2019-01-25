@@ -2,12 +2,15 @@ import { Request, Response, NextFunction } from "express";
 import { AuthMiddleware } from "../middlewares/authMiddleware";
 import { UserController } from "../controllers/userController";
 import { AuthController } from "../controllers/authController";
+import { ProfileController } from "../controllers/profileController";
+
 
 export class Routes {
 
 	public authMiddleware: AuthMiddleware = new AuthMiddleware()
 	public authController: AuthController = new AuthController()
 	public userController: UserController = new UserController()
+	public profileController: ProfileController = new ProfileController()
 
 
 	public routes(app): void {
@@ -28,7 +31,15 @@ export class Routes {
 			.put(this.authMiddleware.verifyToken, this.userController.updateUser)
 			.delete(this.authMiddleware.verifyToken, this.userController.deleteUser)
 
+		// User Profile
+		app.route('/user/profile')
+			.get(this.authMiddleware.verifyToken, this.profileController.profile)
+			.put(this.authMiddleware.verifyToken, this.profileController.updateProfile);
 		
+		// User Profile Photo
+		app.route('/user/profile/upload')
+			.post(this.profileController.uploadPhoto);
+
 		app.use('*', function(req: Request, res: Response) {
 			res.statusCode = 404;
 			throw new Error('Page Not Found');
