@@ -25,29 +25,29 @@ export class AuthMiddleware {
 		}
 
 		try {
-			jwt.verify(token, secret, function (err: Error, decoded:any) {
-				if (err){
+			jwt.verify(token, secret, function (err: Error, decoded: any) {
+				if (err) {
 					errFlag = true;
 				} else {
-					req.body.user_id = decoded.id;
+					req.body.token_user_id = decoded.id;
 					return next();
 				}
-			});  
+			});
 		} catch (err) {
-      errFlag = true;
+			errFlag = true;
 		}
-		
-    if(errFlag) {
-    	return res.status(500)
-					.send({
-						error: {
-							token: {
-								message: 'Failed to authenticate token.'
-							}
-						},
-						message: "Failed to authenticate token.",
-						name: "VerificationError"
+
+		if (errFlag) {
+			return res.status(500)
+				.send({
+					error: {
+						token: {
+							message: 'Failed to authenticate token.'
+						}
+					},
+					message: "Failed to authenticate token.",
+					name: "VerificationError"
 				})
-    }
+		}
 	}
 }

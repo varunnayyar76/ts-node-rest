@@ -31,7 +31,7 @@ export class Routes {
 			.delete(this.authMiddleware.verifyToken, this.userController.deleteUser)
 
 		// User Profile
-		app.route('/user/profile')
+		app.route('/profile')
 			.get(this.authMiddleware.verifyToken, this.profileController.profile)
 			.put(this.authMiddleware.verifyToken, this.profileController.updateProfile);
 

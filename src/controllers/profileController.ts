@@ -3,13 +3,22 @@ import * as path from 'path';
 import * as formidable from 'formidable';
 import * as sharp from 'sharp';
 
+import { User } from '../models/userModel';
+
 const ORG_PATH = path.resolve(__dirname, '../../', 'uploads/profile/org');
 const THUMB_PATH = path.resolve(__dirname, '../../', 'uploads/profile/thumb');
 
 export class ProfileController {
 
   public profile(req: Request, res: Response, next: NextFunction) {
-
+    const user_id = req.body.token_user_id;
+    User.findOne({ _id: user_id }, (err, user) => {
+      if (err) {
+        res.statusCode = 400;
+        return next(err);
+      }
+      return res.json(user);
+    });
   }
 
   public updateProfile(req: Request, res: Response, next: NextFunction) {
